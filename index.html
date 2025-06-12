@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empowering Faculty with Universal Design for Learning for Digital Accessibility</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .kpi-card {
+            background-color: #003f5c;
+            color: white;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #dd5182;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .udl-principle-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 8px solid;
+        }
+        .udl-principle-card.engagement { border-left-color: #dd5182; }
+        .udl-principle-card.representation { border-left-color: #955196; }
+        .udl-principle-card.action-expression { border-left-color: #ff6e54; }
+
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- PALETTE: Brilliant Blues (#003f5c, #444e86, #955196, #dd5182, #ff6e54, #ffa600) -->
+    <!-- CONFIRMATION: NO SVG was used. NO MERMAID JS was used. -->
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#003f5c] mb-4">Cultivating an Accessible Campus</h1>
+            <p class="text-xl md:text-2xl text-[#444e86] font-semibold">Empowering Faculty for Digital Accessibility with Universal Design for Learning</p>
+            <p class="max-w-3xl mx-auto text-lg mt-4">
+                In today's dynamic higher education landscape, true excellence is found in environments where every learner feels a sense of belonging and has equitable opportunities to succeed. Digital accessibility is at the heart of this endeavor, transforming our teaching practices to meet the diverse needs of all students. By embracing Universal Design for Learning (UDL), faculty can champion a culture of proactive accessibility, enriching the educational journey for everyone and reinforcing our commitment to a truly accessible future.
+            </p>
+        </header>
+
+        <section id="barriers" class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-[#003f5c] mb-6">Understanding & Overcoming Common Barriers</h2>
+             <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#003f5c] mb-4">Key Digital Accessibility Issues</h3>
+                        <p class="text-lg mb-4">
+                            Addressing common technical accessibility issues is fundamental. These often stem from a lack of awareness or readily available resources for faculty. Understanding where these errors occur is the first step towards creating truly accessible digital content.
+                        </p>
+                         <p class="text-lg">
+                           The chart illustrates the most frequently cited technical accessibility issues found in higher education content, reflecting areas where proactive faculty action can make the most impact.
+                        </p>
+                    </div>
+                    <div class="chart-container h-80 md:h-96">
+                        <canvas id="commonBarriersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+             <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-[#003f5c] mb-4">✨ Accessibility Report Summarizer ✨</h3>
+                    <p class="text-lg mb-4">
+                        Paste text from an accessibility report or policy document below, and I'll summarize the key accessibility issues or recommendations.
+                    </p>
+                    <textarea id="reportInput" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-[#955196] focus:border-transparent" rows="6" placeholder="Paste your text here..."></textarea>
+                    <button id="summarizeButton" class="bg-[#dd5182] text-white font-bold py-3 px-6 rounded-md shadow-lg hover:bg-[#ff6e54] transition duration-300 ease-in-out flex items-center justify-center">
+                        Summarize Accessibility Report
+                        <span id="loadingSpinner" class="loading-spinner ml-3 hidden"></span>
+                    </button>
+                    <div id="summaryOutput" class="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200 text-gray-700 hidden">
+                        <p class="font-semibold text-lg text-[#003f5c] mb-2">Summary:</p>
+                        <p id="summaryText"></p>
+                    </div>
+                    <div id="errorMessage" class="mt-6 p-4 bg-red-100 text-red-700 rounded-md border border-red-200 hidden">
+                        <p id="errorText"></p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-[#003f5c] mb-4">✨ Actionable Steps Generator ✨</h3>
+                    <p class="text-lg mb-4">
+                        Describe an accessibility barrier, and I'll suggest concrete, actionable steps to address it in a higher education setting.
+                    </p>
+                    <textarea id="barrierInput" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-[#955196] focus:border-transparent" rows="6" placeholder="e.g., 'Lack of alt text for images in online courses'"></textarea>
+                    <button id="generateStepsButton" class="bg-[#955196] text-white font-bold py-3 px-6 rounded-md shadow-lg hover:bg-[#444e86] transition duration-300 ease-in-out flex items-center justify-center">
+                        Generate Steps
+                        <span id="loadingStepsSpinner" class="loading-spinner ml-3 hidden"></span>
+                    </button>
+                    <div id="stepsOutput" class="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200 text-gray-700 hidden">
+                        <p class="font-semibold text-lg text-[#003f5c] mb-2">Actionable Steps:</p>
+                        <p id="stepsText"></p>
+                    </div>
+                    <div id="stepsErrorMessage" class="mt-6 p-4 bg-red-100 text-red-700 rounded-md border border-red-200 hidden">
+                        <p id="stepsErrorText"></p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-[#003f5c] mb-4">✨ Course Content Accessibility Advisor ✨</h3>
+                    <p class="text-lg mb-4">
+                        Paste your course material (e.g., lecture notes, assignment prompts) below, and I'll offer accessibility advice.
+                    </p>
+                    <textarea id="courseContentInput" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-[#955196] focus:border-transparent" rows="6" placeholder="Paste your course content here..."></textarea>
+                    <button id="adviseContentButton" class="bg-[#ff6e54] text-white font-bold py-3 px-6 rounded-md shadow-lg hover:bg-[#ffa600] transition duration-300 ease-in-out flex items-center justify-center">
+                        Get Accessibility Advice
+                        <span id="loadingAdviceSpinner" class="loading-spinner ml-3 hidden"></span>
+                    </button>
+                    <div id="adviceOutput" class="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200 text-gray-700 hidden">
+                        <p class="font-semibold text-lg text-[#003f5c] mb-2">Accessibility Advice:</p>
+                        <p id="adviceText"></p>
+                    </div>
+                    <div id="adviceErrorMessage" class="mt-6 p-4 bg-red-100 text-red-700 rounded-md border border-red-200 hidden">
+                        <p id="adviceErrorText"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-[#003f5c] mb-4">✨ Accessible Language Advisor ✨</h3>
+                    <p class="text-lg mb-4">
+                        Paste text below, and I'll analyze it for non-accessible language and suggest more equitable alternatives.
+                    </p>
+                    <textarea id="languageInput" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-[#955196] focus:border-transparent" rows="6" placeholder="Paste your text here..."></textarea>
+                    <button id="adviseLanguageButton" class="bg-[#ffa600] text-white font-bold py-3 px-6 rounded-md shadow-lg hover:bg-[#ff6e54] transition duration-300 ease-in-out flex items-center justify-center">
+                        Check Language for Accessibility
+                        <span id="loadingLanguageSpinner" class="loading-spinner ml-3 hidden"></span>
+                    </button>
+                    <div id="languageOutput" class="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200 text-gray-700 hidden">
+                        <p class="font-semibold text-lg text-[#003f5c] mb-2">Accessible Language Suggestions:</p>
+                        <p id="languageText"></p>
+                    </div>
+                    <div id="languageErrorMessage" class="mt-6 p-4 bg-red-100 text-red-700 rounded-md border border-red-200 hidden">
+                        <p id="languageErrorText"></p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-[#003f5c] mb-4">✨ Content Simplifier for Readability ✨</h3>
+                    <p class="text-lg mb-4">
+                        Paste complex text here, and I'll simplify it for improved readability and wider accessibility.
+                    </p>
+                    <textarea id="simplifierInput" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-[#955196] focus:border-transparent" rows="6" placeholder="Paste your complex text here..."></textarea>
+                    <button id="simplifyContentButton" class="bg-[#444e86] text-white font-bold py-3 px-6 rounded-md shadow-lg hover:bg-[#955196] transition duration-300 ease-in-out flex items-center justify-center">
+                        Simplify Content
+                        <span id="loadingSimplifierSpinner" class="loading-spinner ml-3 hidden"></span>
+                    </button>
+                    <div id="simplifierOutput" class="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200 text-gray-700 hidden">
+                        <p class="font-semibold text-lg text-[#003f5c] mb-2">Simplified Version:</p>
+                        <p id="simplifierText"></p>
+                    </div>
+                    <div id="simplifierErrorMessage" class="mt-6 p-4 bg-red-100 text-red-700 rounded-md border border-red-200 hidden">
+                        <p id="simplifierErrorText"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="udl-intro" class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-[#003f5c] mb-4">Universal Design for Learning (UDL): A Framework for All</h2>
+            <p class="max-w-3xl mx-auto text-lg">
+                Universal Design for Learning (UDL) is a framework that guides the design of learning environments to be accessible and engaging for all individuals. Instead of retrofitting accommodations, UDL encourages educators to proactively design instruction with flexibility and multiple options for how students can engage with material, process information, and demonstrate their understanding. This approach benefits everyone, creating a more dynamic and accessible learning experience.
+            </p>
+        </section>
+
+        <section id="udl-principles" class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-[#003f5c] mb-6">The Three Principles of UDL</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="udl-principle-card engagement">
+                    <h3 class="text-2xl font-bold text-[#dd5182] mb-2">1. Provide Multiple Means of Engagement</h3>
+                    <p class="text-lg text-gray-700 mb-4">
+                        Motivate and sustain learner interest. This principle focuses on providing options that tap into learners' interests, offer appropriate challenges, and increase motivation.
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Offer flexible learning goals and activities.</li>
+                        <li>Vary methods for student interaction (e.g., discussions, group work, individual projects).</li>
+                        <li>Provide choices in content and tools where appropriate.</li>
+                        <li>Foster collaboration and community.</li>
+                    </ul>
+                </div>
+                <div class="udl-principle-card representation">
+                    <h3 class="text-2xl font-bold text-[#955196] mb-2">2. Provide Multiple Means of Representation</h3>
+                    <p class="text-lg text-gray-700 mb-4">
+                        Present information and content in different ways. This helps learners make connections, build knowledge, and process information effectively.
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Offer text, audio, video, graphics, and interactive simulations.</li>
+                        <li>Use clear headings, structured documents, and alt text for images.</li>
+                        <li>Provide transcripts for audio and captions for video.</li>
+                        <li>Explain vocabulary and symbols clearly.</li>
+                    <li>Offer "chunks" of information and visual organizers.</li>
+                    </ul>
+                </div>
+                <div class="udl-principle-card action-expression">
+                    <h3 class="text-2xl font-bold text-[#ff6e54] mb-2">3. Provide Multiple Means of Action & Expression</h3>
+                    <p class="text-lg text-gray-700 mb-4">
+                        Offer learners varied ways to demonstrate what they know. This allows students to express their knowledge and skills in ways that are most effective for them.
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Allow options for assignments (e.g., essays, presentations, multimedia projects).</li>
+                        <li>Provide assistive technologies and flexible tools.</li>
+                        <li>Offer scaffolding and support for task completion.</li>
+                        <li>Provide varied feedback mechanisms.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="faculty-benefits" class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-[#003f5c] mb-6">UDL in Practice: Benefits for Faculty</h2>
+            <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#003f5c] mb-4">Empowering Your Teaching</h3>
+                        <p class="text-lg mb-4">
+                            Implementing UDL principles can significantly enhance your teaching effectiveness and reduce future workload. By designing with accessibility in mind from the start, you create resources that are inherently flexible and adaptable for diverse student needs, minimizing the need for individual accommodations later.
+                        </p>
+                        <p class="text-lg">
+                            The chart illustrates key benefits faculty experience when adopting UDL, highlighting how it transforms their teaching experience and student outcomes.
+                        </p>
+                    </div>
+                    <div class="chart-container h-80 md:h-96">
+                        <canvas id="facultyBenefitsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="practical-strategies" class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-[#003f5c] mb-6">Actionable Strategies for Accessible Content</h2>
+            <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#444e86] mb-2">1. Structured Documents & Clear Headings</h3>
+                        <p class="text-lg text-gray-700">
+                            Use proper heading styles (Heading 1, Heading 2, etc.) in your documents (Word, Google Docs, LMS pages) to create a logical structure. This allows screen readers to navigate content easily and improves readability for everyone. Avoid using bold text just to make something look like a heading.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#444e86] mb-2">2. Meaningful Alternative Text for Images</h3>
+                        <p class="text-lg text-gray-700">
+                            For every image, chart, or graphic that conveys information, provide concise and descriptive alternative text (alt text). This allows screen reader users to understand the visual content. If an image is purely decorative, mark it as such.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#444e86] mb-2">3. Captions & Transcripts for Multimedia</h3>
+                        <p class="text-lg text-gray-700">
+                            Ensure all videos have accurate closed captions and, ideally, full transcripts. For audio-only content, provide transcripts. If videos contain important visual information not conveyed by speech, also include audio descriptions.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#444e86] mb-2">4. High Contrast Text & Colors</h3>
+                        <p class="text-lg text-gray-700">
+                            Choose color combinations that provide sufficient contrast between text and background. Avoid relying solely on color to convey meaning (e.g., "red indicates incorrect answers"). Use contrast checkers to ensure compliance.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#444e86] mb-2">5. Descriptive Hyperlink Text</h3>
+                        <p class="text-lg text-gray-700">
+                            Instead of "Click here" or pasting raw URLs, use descriptive link text that clearly indicates the destination or purpose of the link (e.g., "Visit the University Library" instead of "Click here").
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#444e86] mb-2">6. Accessible Document Formats</h3>
+                        <p class="text-lg text-gray-700">
+                            Whenever possible, provide documents in accessible formats (e.g., properly structured Word documents, tagged PDFs). Avoid simply scanning documents as images, as these are inaccessible to screen readers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="neurodiversity-udl" class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-[#003f5c] mb-6">Supporting Neurodivergent Learners with UDL</h2>
+            <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                <p class="text-lg mb-4">
+                    Neurodiversity encompasses a wide range of neurological differences, including but not limited to autism, ADHD, dyslexia, and Tourette's syndrome. These differences can impact how individuals perceive, process, and interact with information and their environment. UDL principles are particularly effective in supporting neurodivergent learners by providing flexible learning pathways that accommodate diverse cognitive strengths and challenges.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-[#dd5182] mb-2">UDL & Engagement (Why)</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2">
+                            <li>**Provide choices:** Offer varied ways to demonstrate understanding (e.g., written, oral, visual projects) to reduce anxiety and leverage strengths.</li>
+                            <li>**Optimize relevance:** Connect content to students' interests and real-world applications to boost intrinsic motivation.</li>
+                            <li>**Minimize distractions:** Create clear, uncluttered interfaces and environments to reduce sensory overload.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#955196] mb-2">UDL & Representation (What)</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2">
+                            <li>**Multiple formats:** Present information via text, audio, video, and visual aids to cater to different processing styles.</li>
+                            <li>**Clarify vocabulary/syntax:** Define jargon, explain complex sentence structures, and use visual organizers (e.g., concept maps) to aid comprehension.</li>
+                            <li>**Highlight patterns/relationships:** Use consistent formatting, clear hierarchies, and summaries to help identify key information.</li>
+                        </ul>
+                    </div>
+                    <div class="md:col-span-2">
+                        <h3 class="text-xl font-bold text-[#ff6e54] mb-2">UDL & Action & Expression (How)</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2">
+                            <li>**Flexible response options:** Allow students to choose presentation methods (e.g., essay, presentation, podcast, infographic).</li>
+                            <li>**Scaffolding & support:** Provide clear rubrics, templates, and step-by-step instructions for tasks. Offer options for practice with varied levels of support.</li>
+                            <li>**Executive function support:** Provide checklists, graphic organizers, and explicit instruction on planning and task management.</li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold text-[#003f5c] mt-8 mb-4">Practical Tips for Faculty:</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    <li>**Clear and concise communication:** Use simple language, short sentences, and avoid ambiguity in instructions and expectations.</li>
+                    <li>**Predictable routines:** Establish consistent course structures, assignment formats, and feedback cycles to reduce cognitive load.</li>
+                    <li>**Provide structured choices:** Offer a limited number of meaningful choices for assignments or learning activities to prevent overwhelm.</li>
+                    <li>**Visual supports:** Incorporate diagrams, flowcharts, and visual schedules to aid understanding and organization.</li>
+                    <li>**Allow for processing time:** Be mindful of providing sufficient time for students to process information and formulate responses, especially during discussions.</li>
+                    <li>**Open communication:** Encourage students to communicate their needs and preferences in a safe and supportive environment.</li>
+                </ul>
+
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-gray-50 rounded-lg shadow-inner p-6 md:p-8">
+                        <h3 class="text-2xl font-bold text-[#003f5c] mb-4">✨ UDL & Neurodivergent Tip Generator ✨</h3>
+                        <p class="text-lg mb-4">
+                            Describe a UDL principle or a neurodivergent learning challenge, and I'll generate specific tips for faculty.
+                        </p>
+                        <textarea id="neurodivergentTipInput" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-[#dd5182] focus:border-transparent" rows="6" placeholder="e.g., 'How can I support students with ADHD in my online lectures?' or 'Provide tips for UDL Principle of Representation.'"></textarea>
+                        <button id="generateNeurodivergentTipButton" class="bg-[#dd5182] text-white font-bold py-3 px-6 rounded-md shadow-lg hover:bg-[#ff6e54] transition duration-300 ease-in-out flex items-center justify-center">
+                            Get Neurodivergent Tips
+                            <span id="loadingNeurodivergentTipSpinner" class="loading-spinner ml-3 hidden"></span>
+                        </button>
+                        <div id="neurodivergentTipOutput" class="mt-6 p-4 bg-gray-100 rounded-md border border-gray-200 text-gray-700 hidden">
+                            <p class="font-semibold text-lg text-[#003f5c] mb-2">Generated Tips:</p>
+                            <p id="neurodivergentTipText"></p>
+                        </div>
+                        <div id="neurodivergentTipErrorMessage" class="mt-6 p-4 bg-red-100 text-red-700 rounded-md border border-red-200 hidden">
+                            <p id="neurodivergentTipErrorText"></p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg shadow-inner p-6 md:p-8">
+                        <h3 class="text-2xl font-bold text-[#003f5c] mb-4">✨ Accessible Case Study Ideator ✨</h3>
+                        <p class="text-lg mb-4">
+                            Describe a teaching scenario or an accessibility challenge, and I'll suggest ideas for accessible case studies.
+                        </p>
+                        <textarea id="caseStudyInput" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-[#955196] focus:border-transparent" rows="6" placeholder="e.g., 'Creating an accessible group project for a history class' or 'Designing a STEM lab for students with visual impairments.'"></textarea>
+                        <button id="generateCaseStudyButton" class="bg-[#444e86] text-white font-bold py-3 px-6 rounded-md shadow-lg hover:bg-[#955196] transition duration-300 ease-in-out flex items-center justify-center">
+                            Generate Case Study Ideas
+                            <span id="loadingCaseStudySpinner" class="loading-spinner ml-3 hidden"></span>
+                        </button>
+                        <div id="caseStudyOutput" class="mt-6 p-4 bg-gray-100 rounded-md border border-gray-200 text-gray-700 hidden">
+                            <p class="font-semibold text-lg text-[#003f5c] mb-2">Case Study Ideas:</p>
+                            <p id="caseStudyText"></p>
+                        </div>
+                        <div id="caseStudyErrorMessage" class="mt-6 p-4 bg-red-100 text-red-700 rounded-md border border-red-200 hidden">
+                            <p id="caseStudyErrorText"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 bg-gray-50 rounded-lg shadow-inner p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-[#003f5c] mb-4">✨ Accessible Assignment Creator Assistant ✨</h3>
+                    <p class="text-lg mb-4">
+                        Input an assignment idea, and I'll suggest ways to make it UDL-compliant and accessible for diverse learners.
+                    </p>
+                    <textarea id="assignmentInput" class="w-full p-3 border border-gray-300 rounded-md mb-4 focus:ring-2 focus:ring-[#ff6e54] focus:border-transparent" rows="6" placeholder="e.g., 'Design a research paper assignment on climate change' or 'Create a group presentation about historical events.'"></textarea>
+                    <button id="generateAssignmentButton" class="bg-[#ff6e54] text-white font-bold py-3 px-6 rounded-md shadow-lg hover:bg-[#ffa600] transition duration-300 ease-in-out flex items-center justify-center">
+                        Generate Accessible Assignment Ideas
+                        <span id="loadingAssignmentSpinner" class="loading-spinner ml-3 hidden"></span>
+                    </button>
+                    <div id="assignmentOutput" class="mt-6 p-4 bg-gray-100 rounded-md border border-gray-200 text-gray-700 hidden">
+                        <p class="font-semibold text-lg text-[#003f5c] mb-2">Accessible Assignment Ideas:</p>
+                        <p id="assignmentText"></p>
+                    </div>
+                    <div id="assignmentErrorMessage" class="mt-6 p-4 bg-red-100 text-red-700 rounded-md border border-red-200 hidden">
+                        <p id="assignmentErrorText"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const colorPalette = {
+            blue: '#003f5c',
+            purple: '#955196',
+            pink: '#dd5182',
+            orange: '#ff6e54',
+            yellow: '#ffa600',
+            darkBlue: '#444e86',
+            lightGray: '#f1f5f9'
+        };
+
+        const chartColors = [colorPalette.pink, colorPalette.yellow, colorPalette.purple, colorPalette.orange, colorPalette.darkBlue];
+
+        function wrapLabel(label, maxWidth) {
+            if (label.length <= maxWidth) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine.length > 0) {
+                lines.push(currentLine);
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+        const commonBarriersData = {
+            labels: [
+                'Alternative Text Errors',
+                'Low Contrast Issues',
+                'HTML Heading/Title Errors',
+                'HTML Caption Errors'
+            ].map(label => wrapLabel(label, 16)),
+            datasets: [{
+                label: 'Our College Error Frequency (%)',
+                data: [35.25, 34.33, 17.65, 12.77],
+                backgroundColor: chartColors,
+                borderColor: 'white',
+                borderWidth: 2
+            }]
+        };
+
+        new Chart(document.getElementById('commonBarriersChart'), {
+            type: 'bar',
+            data: commonBarriersData,
+            options: {
+                ...defaultChartOptions,
+                indexAxis: 'y',
+                 plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                           callback: function(value) {
+                               return value + "%"
+                           }
+                        }
+                    }
+                }
+            }
+        });
+
+        const facultyBenefitsData = {
+            labels: [
+                'Increased Student Engagement', 
+                'Reduced Accommodation Requests', 
+                'Improved Course Clarity', 
+                'Enhanced Teaching Reputation', 
+                'Future-Proofed Materials'
+            ].map(label => wrapLabel(label, 16)),
+            datasets: [{
+                label: 'Perceived Benefit (1-10 Scale)',
+                data: [9, 8, 9, 7, 10],
+                backgroundColor: [
+                    colorPalette.dd5182,
+                    colorPalette.ff6e54,
+                    colorPalette.ffa600,
+                    colorPalette.purple,
+                    colorPalette.darkBlue
+                ],
+                borderColor: 'white',
+                borderWidth: 2
+            }]
+        };
+
+        new Chart(document.getElementById('facultyBenefitsChart'), {
+            type: 'polarArea',
+            data: facultyBenefitsData,
+            options: {
+                ...defaultChartOptions,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        ticks: {
+                            backdropColor: 'rgba(255, 255, 255, 0.75)',
+                            color: colorPalette.darkBlue,
+                            stepSize: 1,
+                            beginAtZero: true
+                        },
+                        pointLabels: {
+                            color: colorPalette.blue,
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        document.getElementById('summarizeButton').addEventListener('click', async () => {
+            const reportInput = document.getElementById('reportInput').value;
+            const summaryOutput = document.getElementById('summaryOutput');
+            const summaryText = document.getElementById('summaryText');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            summaryOutput.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+            summaryText.textContent = '';
+            errorText.textContent = '';
+            loadingSpinner.classList.remove('hidden');
+
+            if (!reportInput.trim()) {
+                errorMessage.classList.remove('hidden');
+                errorText.textContent = 'Please enter some text to summarize.';
+                loadingSpinner.classList.add('hidden');
+                return;
+            }
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: `Summarize the following text, focusing on key accessibility issues, challenges, or recommendations relevant to a higher education setting. Keep the summary concise and actionable: ${reportInput}` }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                loadingSpinner.classList.add('hidden');
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    summaryText.textContent = result.candidates[0].content.parts[0].text;
+                    summaryOutput.classList.remove('hidden');
+                } else {
+                    errorMessage.classList.remove('hidden');
+                    errorText.textContent = 'Failed to generate summary. Please try again.';
+                }
+            } catch (error) {
+                console.error('Error summarizing report:', error);
+                loadingSpinner.classList.add('hidden');
+                errorMessage.classList.remove('hidden');
+                errorText.textContent = 'An error occurred while connecting to the AI service. Please try again later.';
+            }
+        });
+
+        document.getElementById('generateStepsButton').addEventListener('click', async () => {
+            const barrierInput = document.getElementById('barrierInput').value;
+            const stepsOutput = document.getElementById('stepsOutput');
+            const stepsText = document.getElementById('stepsText');
+            const stepsErrorMessage = document.getElementById('stepsErrorMessage');
+            const stepsErrorText = document.getElementById('stepsErrorText');
+            const loadingStepsSpinner = document.getElementById('loadingStepsSpinner');
+
+            stepsOutput.classList.add('hidden');
+            stepsErrorMessage.classList.add('hidden');
+            stepsText.textContent = '';
+            stepsErrorText.textContent = '';
+            loadingStepsSpinner.classList.remove('hidden');
+
+            if (!barrierInput.trim()) {
+                stepsErrorMessage.classList.remove('hidden');
+                stepsErrorText.textContent = 'Please describe an accessibility barrier to generate steps.';
+                loadingStepsSpinner.classList.add('hidden');
+                return;
+            }
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: `For a higher education setting, provide concrete, actionable steps to address the following accessibility barrier: "${barrierInput}". Focus on practical advice and best practices.` }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                loadingStepsSpinner.classList.add('hidden');
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    stepsText.textContent = result.candidates[0].content.parts[0].text;
+                    stepsOutput.classList.remove('hidden');
+                } else {
+                    stepsErrorMessage.classList.remove('hidden');
+                    stepsErrorText.textContent = 'Failed to generate actionable steps. Please try again.';
+                }
+            } catch (error) {
+                console.error('Error generating steps:', error);
+                loadingStepsSpinner.classList.add('hidden');
+                stepsErrorMessage.classList.remove('hidden');
+                stepsErrorText.textContent = 'An error occurred while connecting to the AI service. Please try again later.';
+            }
+        });
+
+        document.getElementById('adviseContentButton').addEventListener('click', async () => {
+            const courseContentInput = document.getElementById('courseContentInput').value;
+            const adviceOutput = document.getElementById('adviceOutput');
+            const adviceText = document.getElementById('adviceText');
+            const adviceErrorMessage = document.getElementById('adviceErrorMessage');
+            const adviceErrorText = document.getElementById('adviceErrorText');
+            const loadingAdviceSpinner = document.getElementById('loadingAdviceSpinner');
+
+            adviceOutput.classList.add('hidden');
+            adviceErrorMessage.classList.add('hidden');
+            adviceText.textContent = '';
+            adviceErrorText.textContent = '';
+            loadingAdviceSpinner.classList.remove('hidden');
+
+            if (!courseContentInput.trim()) {
+                adviceErrorMessage.classList.remove('hidden');
+                adviceErrorText.textContent = 'Please enter some course content to get advice.';
+                loadingAdviceSpinner.classList.add('hidden');
+                return;
+            }
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: `Analyze the following course content for potential accessibility issues in a higher education context and suggest actionable improvements. Focus on aspects like text readability, image descriptions, multimedia captions, document structure, and accessible language. Provide specific, practical advice. Content: "${courseContentInput}"` }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                loadingAdviceSpinner.classList.add('hidden');
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    adviceText.textContent = result.candidates[0].content.parts[0].text;
+                    adviceOutput.classList.remove('hidden');
+                } else {
+                    adviceErrorMessage.classList.remove('hidden');
+                    adviceErrorText.textContent = 'Failed to generate accessibility advice. Please try again.';
+                }
+            } catch (error) {
+                console.error('Error generating advice:', error);
+                loadingAdviceSpinner.classList.add('hidden');
+                adviceErrorMessage.classList.remove('hidden');
+                adviceErrorText.textContent = 'An error occurred while connecting to the AI service. Please try again later.';
+            }
+        });
+
+        document.getElementById('adviseLanguageButton').addEventListener('click', async () => {
+            const languageInput = document.getElementById('languageInput').value;
+            const languageOutput = document.getElementById('languageOutput');
+            const languageText = document.getElementById('languageText');
+            const languageErrorMessage = document.getElementById('languageErrorMessage');
+            const languageErrorText = document.getElementById('languageErrorText');
+            const loadingLanguageSpinner = document.getElementById('loadingLanguageSpinner');
+
+            languageOutput.classList.add('hidden');
+            languageErrorMessage.classList.add('hidden');
+            languageText.textContent = '';
+            languageErrorText.textContent = '';
+            loadingLanguageSpinner.classList.remove('hidden');
+
+            if (!languageInput.trim()) {
+                languageErrorMessage.classList.remove('hidden');
+                languageErrorText.textContent = 'Please enter some text to get accessible language suggestions.';
+                loadingLanguageSpinner.classList.add('hidden');
+                return;
+            }
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: `Review the following text for non-accessible language and suggest more equitable, universally understandable, or respectful alternatives suitable for a higher education context. Provide specific examples of problematic phrases and their suggested replacements. Text: "${languageInput}"` }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                loadingLanguageSpinner.classList.add('hidden');
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    languageText.textContent = result.candidates[0].content.parts[0].text;
+                    languageOutput.classList.remove('hidden');
+                } else {
+                    languageErrorMessage.classList.remove('hidden');
+                    languageErrorText.textContent = 'Failed to generate accessible language suggestions. Please try again.';
+                }
+            } catch (error) {
+                console.error('Error generating accessible language advice:', error);
+                loadingLanguageSpinner.classList.add('hidden');
+                languageErrorMessage.classList.remove('hidden');
+                languageErrorText.textContent = 'An error occurred while connecting to the AI service. Please try again later.';
+            }
+        });
+
+        document.getElementById('simplifyContentButton').addEventListener('click', async () => {
+            const simplifierInput = document.getElementById('simplifierInput').value;
+            const simplifierOutput = document.getElementById('simplifierOutput');
+            const simplifierText = document.getElementById('simplifierText');
+            const simplifierErrorMessage = document.getElementById('simplifierErrorMessage');
+            const simplifierErrorText = document.getElementById('simplifierErrorText');
+            const loadingSimplifierSpinner = document.getElementById('loadingSimplifierSpinner');
+
+            simplifierOutput.classList.add('hidden');
+            simplifierErrorMessage.classList.add('hidden');
+            simplifierText.textContent = '';
+            simplifierErrorText.textContent = '';
+            loadingSimplifierSpinner.classList.remove('hidden');
+
+            if (!simplifierInput.trim()) {
+                simplifierErrorMessage.classList.remove('hidden');
+                simplifierErrorText.textContent = 'Please enter some text to simplify.';
+                loadingSimplifierSpinner.classList.add('hidden');
+                return;
+            }
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: `Simplify the following text for improved readability and wider accessibility, suitable for a higher education context. Aim for clear, concise language, breaking down complex sentences or jargon where appropriate. Text: "${simplifierInput}"` }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                loadingSimplifierSpinner.classList.add('hidden');
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    simplifierText.textContent = result.candidates[0].content.parts[0].text;
+                    simplifierOutput.classList.remove('hidden');
+                } else {
+                    simplifierErrorMessage.classList.remove('hidden');
+                    simplifierErrorText.textContent = 'Failed to simplify content. Please try again.';
+                }
+            } catch (error) {
+                console.error('Error simplifying content:', error);
+                loadingSimplifierSpinner.classList.add('hidden');
+                simplifierErrorMessage.classList.remove('hidden');
+                simplifierErrorText.textContent = 'An error occurred while connecting to the AI service. Please try again later.';
+            }
+        });
+
+        document.getElementById('generateNeurodivergentTipButton').addEventListener('click', async () => {
+            const neurodivergentTipInput = document.getElementById('neurodivergentTipInput').value;
+            const neurodivergentTipOutput = document.getElementById('neurodivergentTipOutput');
+            const neurodivergentTipText = document.getElementById('neurodivergentTipText');
+            const neurodivergentTipErrorMessage = document.getElementById('neurodivergentTipErrorMessage');
+            const neurodivergentTipErrorText = document.getElementById('neurodivergentTipErrorText');
+            const loadingNeurodivergentTipSpinner = document.getElementById('loadingNeurodivergentTipSpinner');
+
+            neurodivergentTipOutput.classList.add('hidden');
+            neurodivergentTipErrorMessage.classList.add('hidden');
+            neurodivergentTipText.textContent = '';
+            neurodivergentTipErrorText.textContent = '';
+            loadingNeurodivergentTipSpinner.classList.remove('hidden');
+
+            if (!neurodivergentTipInput.trim()) {
+                neurodivergentTipErrorMessage.classList.remove('hidden');
+                neurodivergentTipErrorText.textContent = 'Please enter a UDL principle or neurodivergent challenge.';
+                loadingNeurodivergentTipSpinner.classList.add('hidden');
+                return;
+            }
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: `Provide actionable tips for faculty in a higher education setting to address the following for neurodivergent learners, applying Universal Design for Learning (UDL) principles: "${neurodivergentTipInput}". Focus on practical and specific advice.` }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                loadingNeurodivergentTipSpinner.classList.add('hidden');
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    neurodivergentTipText.textContent = result.candidates[0].content.parts[0].text;
+                    neurodivergentTipOutput.classList.remove('hidden');
+                } else {
+                    neurodivergentTipErrorMessage.classList.remove('hidden');
+                    neurodivergentTipErrorText.textContent = 'Failed to generate tips. Please try again.';
+                }
+            } catch (error) {
+                console.error('Error generating neurodivergent tips:', error);
+                loadingNeurodivergentTipSpinner.classList.add('hidden');
+                neurodivergentTipErrorMessage.classList.remove('hidden');
+                neurodivergentTipErrorText.textContent = 'An error occurred while connecting to the AI service. Please try again later.';
+            }
+        });
+
+        document.getElementById('generateCaseStudyButton').addEventListener('click', async () => {
+            const caseStudyInput = document.getElementById('caseStudyInput').value;
+            const caseStudyOutput = document.getElementById('caseStudyOutput');
+            const caseStudyText = document.getElementById('caseStudyText');
+            const caseStudyErrorMessage = document.getElementById('caseStudyErrorMessage');
+            const caseStudyErrorText = document.getElementById('caseStudyErrorText');
+            const loadingCaseStudySpinner = document.getElementById('loadingCaseStudySpinner');
+
+            caseStudyOutput.classList.add('hidden');
+            caseStudyErrorMessage.classList.add('hidden');
+            caseStudyText.textContent = '';
+            caseStudyErrorText.textContent = '';
+            loadingCaseStudySpinner.classList.remove('hidden');
+
+            if (!caseStudyInput.trim()) {
+                caseStudyErrorMessage.classList.remove('hidden');
+                caseStudyErrorText.textContent = 'Please enter a teaching scenario or accessibility challenge to generate ideas.';
+                loadingCaseStudySpinner.classList.add('hidden');
+                return;
+            }
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: `For a higher education context, generate ideas for an accessible case study, or suggest ways to make an existing teaching scenario accessible and UDL-compliant, particularly considering neurodivergent learners. Scenario/Challenge: "${caseStudyInput}"` }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                loadingCaseStudySpinner.classList.add('hidden');
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    caseStudyText.textContent = result.candidates[0].content.parts[0].text;
+                    caseStudyOutput.classList.remove('hidden');
+                } else {
+                    caseStudyErrorMessage.classList.remove('hidden');
+                    caseStudyErrorText.textContent = 'Failed to generate case study ideas. Please try again.';
+                }
+            } catch (error) {
+                console.error('Error generating case study ideas:', error);
+                loadingCaseStudySpinner.classList.add('hidden');
+                caseStudyErrorMessage.classList.remove('hidden');
+                caseStudyErrorText.textContent = 'An error occurred while connecting to the AI service. Please try again later.';
+            }
+        });
+
+        document.getElementById('generateAssignmentButton').addEventListener('click', async () => {
+            const assignmentInput = document.getElementById('assignmentInput').value;
+            const assignmentOutput = document.getElementById('assignmentOutput');
+            const assignmentText = document.getElementById('assignmentText');
+            const assignmentErrorMessage = document.getElementById('assignmentErrorMessage');
+            const assignmentErrorText = document.getElementById('assignmentErrorText');
+            const loadingAssignmentSpinner = document.getElementById('loadingAssignmentSpinner');
+
+            assignmentOutput.classList.add('hidden');
+            assignmentErrorMessage.classList.add('hidden');
+            assignmentText.textContent = '';
+            assignmentErrorText.textContent = '';
+            loadingAssignmentSpinner.classList.remove('hidden');
+
+            if (!assignmentInput.trim()) {
+                assignmentErrorMessage.classList.remove('hidden');
+                assignmentErrorText.textContent = 'Please enter an assignment idea to get accessible suggestions.';
+                loadingAssignmentSpinner.classList.add('hidden');
+                return;
+            }
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: `Given the following assignment idea or topic, suggest ways to design it to be UDL-compliant and accessible for diverse learners, specifically considering neurodivergent students in a higher education context. Provide concrete examples and actionable advice. Assignment Idea/Topic: "${assignmentInput}"` }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                loadingAssignmentSpinner.classList.add('hidden');
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    assignmentText.textContent = result.candidates[0].content.parts[0].text;
+                    assignmentOutput.classList.remove('hidden');
+                } else {
+                    assignmentErrorMessage.classList.remove('hidden');
+                    assignmentErrorText.textContent = 'Failed to generate accessible assignment ideas. Please try again.';
+                }
+            } catch (error) {
+                console.error('Error generating accessible assignment ideas:', error);
+                loadingAssignmentSpinner.classList.add('hidden');
+                assignmentErrorMessage.classList.remove('hidden');
+                assignmentErrorText.textContent = 'An error occurred while connecting to the AI service. Please try again later.';
+            }
+        });
+    </script>
+
+</body>
+</html>
